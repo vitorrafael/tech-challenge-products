@@ -5,9 +5,9 @@ import ProductDTO from "../core/products/dto/ProductDTO";
 export default class ProductGateway implements ProductGatewayInterface {
   constructor(private dataSource: ProductDataSource) {}
 
-  async getAllProducts(): Promise<ProductDTO[] | undefined> {
+  async getAllProducts(): Promise<ProductDTO[]> {
     const products = await this.dataSource.findAll();
-    return products;
+    return products || [];
   }
 
   async getByProductId(id: number): Promise<ProductDTO | undefined> {
@@ -16,9 +16,9 @@ export default class ProductGateway implements ProductGatewayInterface {
     return product;
   }
 
-  async getByCategory(category: string): Promise<ProductDTO[] | undefined> {
+  async getByCategory(category: string): Promise<ProductDTO[]> {
     const products = await this.dataSource.findByCategory(category);
-    return products;
+    return products || [];
   }
 
   async createProduct(productDTO: ProductDTO): Promise<ProductDTO> {

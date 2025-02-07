@@ -1,14 +1,15 @@
-import { Application } from "express";
+import { Request, Response, Application } from "express";
 import { sequelize } from "./infrastructure/database/models";
+
 import app from "./server";
 const PORT_SERVER = process.env.PORT_SERVER || 3000;
 
 function configureHealthRoutes(app: Application) {
-  app.get("/health/liveness", async function (_, res) {
+  app.get("/health/liveness", async function (req: Request, res: Response): Promise<Response> {
     return res.status(200).json({});
   });
 
-  app.get("/health/readiness", async function (_, res) {
+  app.get("/health/readiness", async function (req: Request, res: Response): Promise<Response> {
     try {
       await sequelize.authenticate();
       return res.status(200).json({});
