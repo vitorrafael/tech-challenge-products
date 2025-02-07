@@ -16,5 +16,6 @@ COPY . .
 # Expõe a porta que o aplicativo vai rodar
 EXPOSE 3000
 
-# Comando para iniciar a aplicação
-CMD ["node", "server.js"]
+RUN npm run build
+
+CMD [ "node", "build/index.js" ]
