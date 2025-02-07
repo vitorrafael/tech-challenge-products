@@ -11,7 +11,7 @@
 // });
 
 import express from "express";
-import { swaggerUi, swaggerDocs } from "./infrastructure/config/swagger";
+import { swaggerUi, swaggerDocs } from "./infrastructure/config/swagger.ts";
 import productsAPIRouter from "./api/ProductsAPI";
 
 const app = express();
