@@ -1,10 +1,47 @@
 services:
-  app:
-    build: .
+  lanchonete-db-products:
+    image: postgres:latest
+    container_name: lanchonete_products_postgres
+    restart: always
     ports:
-      - "3000:3000"
-    volumes:
-      - .:/app
-      - /app/node_modules
+      - "${HOST_PORT_DB}:${CONTAINER_PORT_DB}"
     environment:
-      - NODE_ENV=development
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - db_data:${VOLUME_DB_DATA}
+    networks:
+      - fiap
+    expose:
+      - ${CONTAINER_PORT_DB}
+
+  lanchonete-products-node:
+    build:
+      context: .
+    container_name: lanchonete-products-node
+    depends_on:
+      - lanchonete-db-products
+    environment:
+      PORT_SERVER: ${PORT_SERVER}
+      PORT_DB: ${PORT_DB}
+      DB_NAME: ${DB_NAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+    ports:
+      - "${HOST_PORT_SERVER}:${CONTAINER_PORT_SERVER}"
+    restart: always
+    networks:
+      - fiap
+    expose:
+      - ${CONTAINER_PORT_SERVER}
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+
+volumes:
+  db_data:
+
+networks:
+  fiap:
+    driver: bridge
