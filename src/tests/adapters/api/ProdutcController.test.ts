@@ -26,7 +26,7 @@ describe("Product Controller", () => {
       category: ProductCategory.Acompanhamento,
       description: "Description",
       price: 10,
-      ...customProps
+      ...customProps,
     };
   }
 
@@ -34,7 +34,10 @@ describe("Product Controller", () => {
     createStub = sinon.stub(SequelizeProductDataSource.prototype, "create");
     findAllStub = sinon.stub(SequelizeProductDataSource.prototype, "findAll");
     findByIdStub = sinon.stub(SequelizeProductDataSource.prototype, "findById");
-    findByCategoryStub = sinon.stub(SequelizeProductDataSource.prototype, "findByCategory");
+    findByCategoryStub = sinon.stub(
+      SequelizeProductDataSource.prototype,
+      "findByCategory"
+    );
     updateStub = sinon.stub(SequelizeProductDataSource.prototype, "update");
     deleteStub = sinon.stub(SequelizeProductDataSource.prototype, "delete");
   });
@@ -80,7 +83,9 @@ describe("Product Controller", () => {
       const res = await request(app).post("/products").send(product);
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.deep.equal({ error: new MissingPropertyError("name").message });
+      expect(res.body).to.deep.equal({
+        error: new MissingPropertyError("name").message,
+      });
       expect(createStub.calledOnce).to.be.false;
     });
 
@@ -93,7 +98,9 @@ describe("Product Controller", () => {
       const res = await request(app).post("/products").send(product);
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.deep.equal({ error: new InvalidCategoryError(category).message });
+      expect(res.body).to.deep.equal({
+        error: new InvalidCategoryError(category).message,
+      });
       expect(createStub.calledOnce).to.be.false;
     });
 
@@ -128,7 +135,9 @@ describe("Product Controller", () => {
       const res = await request(app).get(`/products/${id}`);
 
       expect(res.status).to.equal(404);
-      expect(res.body).to.deep.equal({ error: new ResourceNotFoundError("Product", "id", id).message });
+      expect(res.body).to.deep.equal({
+        error: new ResourceNotFoundError("Product", "id", id).message,
+      });
       expect(findByIdStub.calledOnce).to.be.true;
       expect(findByIdStub.calledOnceWith(id)).to.be.true;
     });
@@ -180,13 +189,17 @@ describe("Product Controller", () => {
       const products = [
         buildProduct({ id: 1 }),
         buildProduct({ id: 2, category: ProductCategory.Bebida }),
-        buildProduct({ id: 3, category: ProductCategory.Bebida })
+        buildProduct({ id: 3, category: ProductCategory.Bebida }),
       ];
       const productDTOs = products.map((product) => new ProductDTO(product));
-      const productDTOsFiltered = productDTOs.filter((product) => product.category === ProductCategory.Bebida);
+      const productDTOsFiltered = productDTOs.filter(
+        (product) => product.category === ProductCategory.Bebida
+      );
       findByCategoryStub.resolves(productDTOsFiltered);
 
-      const res = await request(app).get(`/category/${ProductCategory.Bebida}/products`);
+      const res = await request(app).get(
+        `/category/${ProductCategory.Bebida}/products`
+      );
 
       expect(res.status).to.equal(200);
       expect(res.body).to.deep.equal(productDTOsFiltered);
@@ -195,7 +208,9 @@ describe("Product Controller", () => {
 
     it("should return empty list when no have products in category for given", async () => {
       findByCategoryStub.resolves([]);
-      const res = await request(app).get(`/category/${ProductCategory.Acompanhamento}/products`);
+      const res = await request(app).get(
+        `/category/${ProductCategory.Acompanhamento}/products`
+      );
 
       expect(res.status).to.equal(200);
       expect(res.body).to.deep.equal([]);
@@ -208,14 +223,16 @@ describe("Product Controller", () => {
 
       expect(res.status).to.equal(400);
       expect(res.body).to.deep.equal({
-        error: new InvalidCategoryError(someCategory).message
+        error: new InvalidCategoryError(someCategory).message,
       });
       expect(findByCategoryStub.calledOnce).to.be.false;
     });
 
     it("should return an error message in unhandled cases", async () => {
       findByCategoryStub.rejects();
-      const res = await request(app).get(`/category/${ProductCategory.Acompanhamento}/products`);
+      const res = await request(app).get(
+        `/category/${ProductCategory.Acompanhamento}/products`
+      );
 
       expect(res.status).to.equal(500);
       expect(res.body).to.deep.equal({ error: "Error" });
@@ -244,7 +261,9 @@ describe("Product Controller", () => {
       const res = await request(app).put(`/products/1`).send(product);
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.deep.equal({ error: new MissingPropertyError("name").message });
+      expect(res.body).to.deep.equal({
+        error: new MissingPropertyError("name").message,
+      });
       expect(updateStub.calledOnce).to.be.false;
     });
 
@@ -255,7 +274,9 @@ describe("Product Controller", () => {
       const res = await request(app).put(`/products/1`).send(product);
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.deep.equal({ error: new InvalidCategoryError(category).message });
+      expect(res.body).to.deep.equal({
+        error: new InvalidCategoryError(category).message,
+      });
       expect(updateStub.calledOnce).to.be.false;
     });
 
@@ -263,7 +284,13 @@ describe("Product Controller", () => {
       const res = await request(app).put(`/products/1`).send(buildProduct());
 
       expect(res.status).to.equal(404);
-      expect(res.body).to.deep.equal({ error: new ResourceNotFoundError(ResourceNotFoundError.Resources.Product, "id", 1).message });
+      expect(res.body).to.deep.equal({
+        error: new ResourceNotFoundError(
+          ResourceNotFoundError.Resources.Product,
+          "id",
+          1
+        ).message,
+      });
       expect(updateStub.calledOnce).to.be.false;
     });
 
