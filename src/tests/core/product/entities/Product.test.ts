@@ -70,7 +70,7 @@ context("Product", () => {
             category: ProductCategory.Lanche,
             description: "Describing this product...",
             price: 12,
-            images: [{ url: "http://url1.com" }, { url: "http://url2.com" }]
+            images: [{ url: "https://url1.com" }, { url: "https://url2.com" }]
           })
       ).to.not.throw();
     });
