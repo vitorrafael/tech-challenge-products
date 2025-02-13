@@ -4,7 +4,7 @@ import GetByProductId from "../interfaces/GetByProductId";
 import ResourceNotFoundError from "../../common/exceptions/ResourceNotFoundError";
 
 export default class GetByProductIdUseCase implements GetByProductId {
-  constructor(private productGateway: ProductGateway) {}
+  constructor(private readonly productGateway: ProductGateway) { }
 
   async getByProductId(id: number): Promise<ProductDTO> {
     const product = await this.productGateway.getByProductId(id);

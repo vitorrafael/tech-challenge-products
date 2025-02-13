@@ -5,7 +5,7 @@ import ProductCategory from "../entities/ProductCategory";
 import InvalidCategoryError from "../exceptions/InvalidCategoryError";
 
 export default class GetByCategoryUseCase implements GetByCategory {
-  constructor(private productGateway: ProductGateway) {}
+  constructor(private readonly productGateway: ProductGateway) { }
 
   async getByCategory(category: string): Promise<ProductDTO[]> {
     if (!Object.keys(ProductCategory).includes(category)) throw new InvalidCategoryError(category);

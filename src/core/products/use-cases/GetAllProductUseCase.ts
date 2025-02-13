@@ -3,7 +3,7 @@ import ProductGateway from "../../interfaces/ProductGateway";
 import GetAllProducts from "../interfaces/GetAllProducts";
 
 export default class GetAllProductsUseCase implements GetAllProducts {
-  constructor(private productGateway: ProductGateway) {}
+  constructor(private readonly productGateway: ProductGateway) { }
 
   async getAllProducts(): Promise<ProductDTO[]> {
     const products = await this.productGateway.getAllProducts();
