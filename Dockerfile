@@ -12,6 +12,8 @@ EXPOSE $PORT
 
 RUN mkdir -p /usr/src/app
 
+RUN chown -R products-api /usr/src/app
+
 WORKDIR /usr/src/app
 
 COPY package*.json ./
