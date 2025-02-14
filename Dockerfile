@@ -22,12 +22,12 @@ RUN npm install --ignore-scripts -g nodemon && npm install --ignore-scripts
 
 # COPY --chown=products-api . .
 
-COPY --chown=products-api --chmod=755 ./src ./src
-COPY --chown=products-api --chmod=755 tsconfig.json ./
-COPY --chown=products-api --chmod=755 .sequelizerc ./
-COPY --chown=products-api --chmod=755 nodemon.json ./
-COPY --chown=products-api --chmod=755 package*.json ./
-COPY --chown=products-api --chmod=755 mocharc.json ./
+COPY --chown=root:root --chmod=755 ./src ./src
+COPY --chown=root:root --chmod=755 tsconfig.json ./
+COPY --chown=root:root --chmod=755 .sequelizerc ./
+COPY --chown=root:root --chmod=755 nodemon.json ./
+COPY --chown=root:root --chmod=755 package*.json ./
+COPY --chown=root:root --chmod=755 mocharc.json ./
 
 RUN npm run build
 
