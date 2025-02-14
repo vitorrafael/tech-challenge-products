@@ -18,7 +18,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm install -g nodemon && npm install
+RUN npm install --ignore-scripts -g nodemon && npm install --ignore-scripts
 
 COPY --chown=products-api . .
 
