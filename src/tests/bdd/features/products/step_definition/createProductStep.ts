@@ -11,6 +11,11 @@ Sinon.stub(SequelizeProductDataSource.prototype, "create").callsFake(
     Promise.resolve({ id: Math.trunc(Math.random() * 100), ...ProductDTO }) as any
 );
 
+let stubbedProducts: ProductDTO[] = [];
+Sinon.stub(SequelizeProductDataSource.prototype, "findAll").callsFake(
+  () => Promise.resolve(stubbedProducts)
+);
+
 Given("I have a product with name {string} and category {string} and price {string}", function (name: string, category: string, price: string) {
   this.name = name;
   this.category = category;
@@ -29,4 +34,21 @@ Then("should create product with name {string}", function (name: string) {
   Object.entries(expectedResponse).forEach(([key, value]) => {
     expect(this.response.body[key]).to.be.equal(value);
   });
+});
+
+Given("I have these products", function (dataTable) {
+  stubbedProducts = dataTable.hashes() as ProductDTO[];
+})
+
+When("I list all products", async function () {
+  this.response = await request(app).get("/products");
+});
+
+Then("should list all products", function () {
+  expect(this.response.body).to.have.length(stubbedProducts.length);
+});
+
+Then("should list product with name {string}", function (name: string) {
+  const product = this.response.body.find((p: ProductDTO) => p.name === name);
+  expect(product).to.not.be.undefined;
 });
