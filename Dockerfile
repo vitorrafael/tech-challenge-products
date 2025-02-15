@@ -1,20 +1,36 @@
-# Usa uma imagem oficial do Node.js como base
 FROM node:lts-alpine
 
-# Define o diretório de trabalho dentro do contêiner
-WORKDIR /app
+RUN adduser -D products-api
 
-# Copia os arquivos do package.json e package-lock.json
+ARG PORT_SERVER=8080
+ENV PORT $PORT_SERVER
+
+ARG API_PORT=8080
+ENV API_PORT=${API_PORT}
+
+EXPOSE $PORT
+
+RUN mkdir -p /usr/src/app
+
+RUN chown -R products-api /usr/src/app
+
+WORKDIR /usr/src/app
+
 COPY package*.json ./
 
-# Instala as dependências
-RUN npm install
+RUN npm install --ignore-scripts -g nodemon && npm install --ignore-scripts
 
-# Copia todos os arquivos do projeto
-COPY . .
+# COPY --chown=products-api . .
 
-# Expõe a porta que o aplicativo vai rodar
-EXPOSE 3000
+COPY --chown=root:root --chmod=755 ./src ./src
+COPY --chown=root:root --chmod=755 tsconfig.json ./
+COPY --chown=root:root --chmod=755 .sequelizerc ./
+COPY --chown=root:root --chmod=755 nodemon.json ./
+COPY --chown=root:root --chmod=755 package*.json ./
+COPY --chown=root:root --chmod=755 mocharc.json ./
 
-# Comando para iniciar a aplicação
-CMD ["node", "server.js"]
+RUN npm run build
+
+USER products-api
+
+CMD [ "node", "build/index.js" ]
