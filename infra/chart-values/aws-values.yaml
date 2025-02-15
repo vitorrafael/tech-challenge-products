@@ -1,11 +1,11 @@
-# Helm Values Specific to Orders Microservice
+# Helm Values Specific to Products Microservice
 configMapData:
   API_PORT: "31200"
   PORT_SERVER: "8080"
 
-  DATABASE_HOST: orders-db
+  DATABASE_HOST: products-db
   DATABASE_PORT: "5432"
-  DATABASE_NAME: "orders-database"
+  DATABASE_NAME: "products-database"
   DATABASE_USER: "postgres"
   DATABASE_DIALECT: "postgres"
 
@@ -15,11 +15,11 @@ secret:
     DATABASE_PASSWORD: "TVRJek5EVTI="
 
 # externalServices:
-#   - name: orders-db
+#   - name: products-db
 #     externalName: lanchonete-database.ccyadp9cu3n9.us-east-1.rds.amazonaws.com
 
 image:
-  repository: "045628470274.dkr.ecr.us-east-1.amazonaws.com/tech-challenge-lanchonete/orders-vitorrafael"
+  repository: "045628470274.dkr.ecr.us-east-1.amazonaws.com/tech-challenge-lanchonete/products"
   tag: "latest"
 
 service:
@@ -35,7 +35,7 @@ database:
     repository: postgres
     tag: latest
   configMapData:
-    POSTGRES_DB: "orders-database"
+    POSTGRES_DB: "products-database"
     POSTGRES_USER: "postgres"
     POSTGRES_PORT: "5433"
     VOLUME_DB_DATA: "/var/lib/postgresql/data"
