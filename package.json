@@ -8,6 +8,8 @@
     "dev": "nodemon",
     "build": "tsc -p tsconfig.json",
     "test": "mocha --configs=.mocharc.json 'src/tests/**/*.test.ts' --recursive",
+    "coverage": "nyc --reporter=text --reporter=lcov npm run test",
+    "format": "prettier --write .",
     "test:bdd": "cucumber-js"
   },
   "keywords": [],
