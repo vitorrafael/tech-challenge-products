@@ -5,7 +5,7 @@ configMapData:
 
   DATABASE_HOST: products-db
   DATABASE_PORT: "5432"
-  DATABASE_NAME: "products-database"
+  DATABASE_NAME: "products"
   DATABASE_USER: "postgres"
   DATABASE_DIALECT: "postgres"
 
@@ -14,9 +14,9 @@ secret:
   data:
     DATABASE_PASSWORD: "MTIzNDU2"
 
-# externalServices:
-#   - name: products-db
-#     externalName: lanchonete-database.ccyadp9cu3n9.us-east-1.rds.amazonaws.com
+externalServices:
+  - name: products-db
+    externalName: lanchonete-database.ccyadp9cu3n9.us-east-1.rds.amazonaws.com
 
 image:
   repository: "045628470274.dkr.ecr.us-east-1.amazonaws.com/tech-challenge-lanchonete/products"
@@ -28,16 +28,4 @@ service:
   targetPort: 8080
 
 database:
-  port: 5432
-  exposedPort: 5433
-  useStatefulSet: true
-  image:
-    repository: postgres
-    tag: latest
-  configMapData:
-    POSTGRES_DB: "products-database"
-    POSTGRES_USER: "postgres"
-    POSTGRES_PORT: "5433"
-    VOLUME_DB_DATA: "/var/lib/postgresql/data"
-  secretData:
-    POSTGRES_PASSWORD: "MTIzNDU2"
+  useStatefulSet: false
